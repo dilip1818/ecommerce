@@ -1,0 +1,82 @@
+# =========================
+# Project files
+# =========================
+HELP.md
+
+# Maven target directory
+target/
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Maven wrapper JAR
+.mvn/wrapper/maven-wrapper.jar
+
+# =========================
+# Java & Spring Boot
+# =========================
+*.class
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+hs_err_pid*
+replay_pid*
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# =========================
+# IntelliJ IDEA
+# =========================
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# User-specific files created by IntelliJ
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/dictionaries
+.idea/**/shelf
+.idea/**/httpRequests
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+.idea/**/gradle.xml
+.idea/**/libraries
+
+# =========================
+# Environment / Config
+# =========================
+*.env
+*.env.local
+application-*.yml
+application-*.properties
+*.properties.local
+*.yml.local
+
+# =========================
+# OS generated files
+# =========================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# =========================
+# Logs and Reports
+# =========================
+logs/
+*.log
+test-output/
+surefire-reports/
+jacoco-report/
