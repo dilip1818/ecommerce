@@ -2,6 +2,8 @@ package com.ideas2it.ecommerce.service.impl;
 
 import com.ideas2it.ecommerce.dto.AuthDtos;
 import com.ideas2it.ecommerce.entity.User;
+import com.ideas2it.ecommerce.exception.ResourceAlreadyExistsException;
+import com.ideas2it.ecommerce.exception.ResourceNotFoundException;
 import com.ideas2it.ecommerce.repository.UserRepository;
 import com.ideas2it.ecommerce.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -26,6 +28,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public AuthDtos.UserResponse register(User user) {
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new ResourceAlreadyExistsException("User", "email", user.getEmail());
+        }
+        
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User saved = userRepository.save(user);
         return modelMapper.map(saved, AuthDtos.UserResponse.class);

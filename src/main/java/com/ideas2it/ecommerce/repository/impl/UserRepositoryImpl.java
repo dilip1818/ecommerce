@@ -90,6 +90,11 @@ public class UserRepositoryImpl implements UserRepository {
     public List<User> findAll() {
         return jdbcTemplate.query("select user_id, name, email, password, phone, role_id from users order by user_id", mapper);
     }
+
+    @Override
+    public void deleteById(Integer userId) {
+        jdbcTemplate.update("delete from users where user_id=?", userId);
+    }
 }
 
 

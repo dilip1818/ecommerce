@@ -24,6 +24,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         p.setDescription(rs.getString("description"));
         p.setPrice(rs.getBigDecimal("price"));
         p.setStock(rs.getInt("stock"));
+        try { p.setSellerId(rs.getInt("seller_id")); } catch (Exception ignored) {}
         return p;
     };
 
@@ -35,22 +36,24 @@ public class ProductRepositoryImpl implements ProductRepository {
     public Product save(Product product) {
         if (product.getProductId() == null) {
             Integer generatedId = jdbcTemplate.queryForObject(
-                    "INSERT INTO product (name, description, price, stock) VALUES (?, ?, ?, ?) RETURNING product_id",
+                    "INSERT INTO product (name, description, price, stock, seller_id) VALUES (?, ?, ?, ?, ?) RETURNING product_id",
                     Integer.class,
                     product.getName(),
                     product.getDescription(),
                     product.getPrice(),
-                    product.getStock()
+                    product.getStock(),
+                    product.getSellerId()
             );
             product.setProductId(generatedId);
             return product;
         } else {
             jdbcTemplate.update(
-                    "UPDATE product SET name=?, description=?, price=?, stock=? WHERE product_id=?",
+                    "UPDATE product SET name=?, description=?, price=?, stock=?, seller_id=? WHERE product_id=?",
                     product.getName(),
                     product.getDescription(),
                     product.getPrice(),
                     product.getStock(),
+                    product.getSellerId(),
                     product.getProductId()
             );
             return product;
@@ -60,13 +63,13 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Optional<Product> findById(Integer productId) {
-        return jdbcTemplate.query("select product_id, name, description, price, stock from product where product_id=?", mapper, productId)
+        return jdbcTemplate.query("select product_id, name, description, price, stock, seller_id from product where product_id=?", mapper, productId)
                 .stream().findFirst();
     }
 
     @Override
     public List<Product> findAll() {
-        return jdbcTemplate.query("select product_id, name, description, price, stock from product order by product_id", mapper);
+        return jdbcTemplate.query("select product_id, name, description, price, stock, seller_id from product order by product_id", mapper);
     }
 
     @Override
@@ -77,6 +80,11 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public void updateStock(Integer productId, Integer stock) {
         jdbcTemplate.update("update product set stock=? where product_id=?", stock, productId);
+    }
+
+    @Override
+    public List<Product> findBySellerId(Integer sellerId) {
+        return jdbcTemplate.query("select product_id, name, description, price, stock, seller_id from product where seller_id=? order by product_id", mapper, sellerId);
     }
 }
 

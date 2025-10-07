@@ -19,6 +19,7 @@ public class ProductDtos {
         public String description;
         public BigDecimal price;
         public Integer stock;
+        public Integer sellerId;
     }
 }
 

@@ -25,6 +25,7 @@ public class OrderRepositoryImpl implements OrderRepository {
         o.setOrderDate(rs.getTimestamp("order_date").toInstant());
         o.setStatus(rs.getString("status"));
         o.setTotalAmount(rs.getBigDecimal("total_amount"));
+        try { o.setDeliveryAgentId(rs.getInt("delivery_agent_id")); } catch (Exception ignored) {}
         return o;
     };
 
@@ -36,22 +37,24 @@ public class OrderRepositoryImpl implements OrderRepository {
     public Order save(Order order) {
         if (order.getOrderId() == null) {
             Integer generatedId = jdbcTemplate.queryForObject(
-                    "INSERT INTO orders (user_id, order_date, status, total_amount) VALUES (?, ?, ?, ?) RETURNING order_id",
+                    "INSERT INTO orders (user_id, order_date, status, total_amount, delivery_agent_id) VALUES (?, ?, ?, ?, ?) RETURNING order_id",
                     Integer.class,
                     order.getUserId(),
                     java.sql.Timestamp.from(order.getOrderDate()),
                     order.getStatus(),
-                    order.getTotalAmount()
+                    order.getTotalAmount(),
+                    order.getDeliveryAgentId()
             );
             order.setOrderId(generatedId);
             return order;
         } else {
             jdbcTemplate.update(
-                    "UPDATE orders SET user_id=?, order_date=?, status=?, total_amount=? WHERE order_id=?",
+                    "UPDATE orders SET user_id=?, order_date=?, status=?, total_amount=?, delivery_agent_id=? WHERE order_id=?",
                     order.getUserId(),
                     java.sql.Timestamp.from(order.getOrderDate()),
                     order.getStatus(),
                     order.getTotalAmount(),
+                    order.getDeliveryAgentId(),
                     order.getOrderId()
             );
             return order;
@@ -61,13 +64,28 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public Optional<Order> findById(Integer orderId) {
-        return jdbcTemplate.query("select order_id, user_id, order_date, status, total_amount from orders where order_id=?", mapper, orderId)
+        return jdbcTemplate.query("select order_id, user_id, order_date, status, total_amount, delivery_agent_id from orders where order_id=?", mapper, orderId)
                 .stream().findFirst();
     }
 
     @Override
     public List<Order> findByUserId(Integer userId) {
-        return jdbcTemplate.query("select order_id, user_id, order_date, status, total_amount from orders where user_id=? order by order_id", mapper, userId);
+        return jdbcTemplate.query("select order_id, user_id, order_date, status, total_amount, delivery_agent_id from orders where user_id=? order by order_id", mapper, userId);
+    }
+
+    @Override
+    public List<Order> findByDeliveryAgentId(Integer deliveryAgentId) {
+        return jdbcTemplate.query("select order_id, user_id, order_date, status, total_amount, delivery_agent_id from orders where delivery_agent_id=? order by order_id", mapper, deliveryAgentId);
+    }
+
+    @Override
+    public List<Order> findAll() {
+        return jdbcTemplate.query("select order_id, user_id, order_date, status, total_amount, delivery_agent_id from orders order by order_id", mapper);
+    }
+
+    @Override
+    public void updateDeliveryStatus(Integer orderId, String status, Integer deliveryAgentId) {
+        jdbcTemplate.update("update orders set status=?, delivery_agent_id=? where order_id=?", status, deliveryAgentId, orderId);
     }
 
     @Override

@@ -10,6 +10,7 @@ public interface ProductRepository {
     List<Product> findAll();
     void deleteById(Integer productId);
     void updateStock(Integer productId, Integer stock);
+    List<Product> findBySellerId(Integer sellerId);
 }
 
 

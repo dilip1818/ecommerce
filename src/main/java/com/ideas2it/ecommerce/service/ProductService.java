@@ -11,6 +11,10 @@ public interface ProductService {
     List<ProductDtos.ProductResponse> list();
     void delete(Integer productId);
     void updateStock(Integer productId, Integer stock);
+    List<ProductDtos.ProductResponse> listBySeller(Integer sellerId);
+    ProductDtos.ProductResponse createForSeller(Product product, Integer sellerId);
+    ProductDtos.ProductResponse updateForSeller(Integer productId, Product product, Integer sellerId);
+    void deleteForSeller(Integer productId, Integer sellerId);
 }
 
 

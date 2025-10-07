@@ -12,7 +12,6 @@ public class OrderDtos {
     }
 
     public static class CreateOrderRequest {
-        @NotNull public Integer userId;
         @NotNull public List<OrderItemRequest> items;
     }
 
@@ -27,6 +26,7 @@ public class OrderDtos {
         public java.time.Instant orderDate;
         public String status;
         public BigDecimal totalAmount;
+        public Integer deliveryAgentId;
     }
 
     public static class PaymentResponse {

@@ -24,7 +24,8 @@ create table product (
   name varchar(150) not null,
   description text,
   price numeric(12,2) not null,
-  stock int not null
+  stock int not null,
+  seller_id int references users(user_id)
 );
 
 create table orders (
@@ -32,7 +33,8 @@ create table orders (
   user_id int not null references users(user_id),
   order_date timestamp not null,
   status varchar(30) not null,
-  total_amount numeric(12,2) not null
+  total_amount numeric(12,2) not null,
+  delivery_agent_id int references users(user_id)
 );
 
 create table order_item (
@@ -50,4 +52,6 @@ create table payment (
   amount numeric(12,2) not null,
   method varchar(30) not null
 );
+
+
 

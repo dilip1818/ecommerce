@@ -10,6 +10,7 @@ public class Order {
     private Instant orderDate;
     private String status;
     private BigDecimal totalAmount;
+    private Integer deliveryAgentId;
 
     public Integer getOrderId() {
         return orderId;
@@ -49,6 +50,14 @@ public class Order {
 
     public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public Integer getDeliveryAgentId() {
+        return deliveryAgentId;
+    }
+
+    public void setDeliveryAgentId(Integer deliveryAgentId) {
+        this.deliveryAgentId = deliveryAgentId;
     }
 
     @Override

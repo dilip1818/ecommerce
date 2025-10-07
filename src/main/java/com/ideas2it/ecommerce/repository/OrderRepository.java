@@ -11,6 +11,9 @@ public interface OrderRepository {
     Optional<Order> findById(Integer orderId);
     List<Order> findByUserId(Integer userId);
     BigDecimal findPriceByProductId(Integer productId);
+    List<Order> findByDeliveryAgentId(Integer deliveryAgentId);
+    List<Order> findAll();
+    void updateDeliveryStatus(Integer orderId, String status, Integer deliveryAgentId);
 }
 
 

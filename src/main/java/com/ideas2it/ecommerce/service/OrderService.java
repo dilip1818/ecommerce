@@ -9,9 +9,12 @@ import java.util.List;
 
 public interface OrderService {
     OrderDtos.OrderResponse createOrder(Integer userId, List<OrderItem> items);
-    OrderDtos.PaymentResponse pay(Integer orderId, Payment payment);
+    OrderDtos.PaymentResponse pay(Integer orderId);
     List<OrderDtos.OrderResponse> listUserOrders(Integer userId);
     BigDecimal getPriceByProductId(Integer productId);
+    List<OrderDtos.OrderResponse> listAllOrders();
+    List<OrderDtos.OrderResponse> listAssignedOrders(Integer deliveryAgentId);
+    OrderDtos.OrderResponse updateDeliveryStatus(Integer orderId, String status, Integer deliveryAgentId);
 }
 
 

@@ -20,7 +20,7 @@ public class PaymentController {
         com.ideas2it.ecommerce.entity.Payment p = new com.ideas2it.ecommerce.entity.Payment();
         p.setAmount(req.amount);
         p.setMethod(req.method);
-        return ResponseEntity.ok(orderService.pay(orderId, p));
+        return ResponseEntity.ok(orderService.pay(orderId));
     }
 }
 
